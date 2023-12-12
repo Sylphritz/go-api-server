@@ -1,4 +1,4 @@
-package ping
+package user
 
 import (
 	"path"
@@ -7,8 +7,8 @@ import (
 	"github.com/sylphritz/go-api-server/pkg/controller"
 )
 
-var BasePath string = "/ping"
+var BasePath string = "/users"
 
 func SetupRoutes(r *gin.Engine) {
-	r.GET(path.Join(BasePath, "/"), controller.GetPing)
+	r.POST(path.Join(BasePath, "/"), controller.RegisterUser)
 }
