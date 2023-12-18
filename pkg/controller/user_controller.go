@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"net/http"
 	"strings"
 
@@ -16,32 +15,12 @@ type UserResponse struct {
 	Data *schema.User `json:"data"`
 }
 
-func abortRequiredFieldError(c *gin.Context, fieldName string) {
-	response.RespondWithError(c, response.NewBadRequestError(fmt.Sprintf("%v is required", fieldName)))
-}
-
-func getRequiredFields(c *gin.Context, fields []string) (map[string]string, bool) {
-	data := map[string]string{}
-
-	for _, field := range fields {
-		value, found := c.GetPostForm(field)
-		if !found {
-			abortRequiredFieldError(c, field)
-			return data, false
-		}
-
-		data[field] = value
-	}
-
-	return data, true
-}
-
 func isDuplicateEmail(err error) bool {
 	return strings.Contains(err.Error(), "duplicate key")
 }
 
 func RegisterUser(c *gin.Context) {
-	data, ok := getRequiredFields(c, []string{"email", "password"})
+	data, ok := getRequiredFormFields(c, []string{"email", "password"})
 	if !ok {
 		return
 	}

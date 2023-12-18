@@ -2,11 +2,13 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/sylphritz/go-api-server/pkg/router/ping"
-	"github.com/sylphritz/go-api-server/pkg/router/user"
+	"github.com/sylphritz/go-api-server/pkg/router/auth_router"
+	"github.com/sylphritz/go-api-server/pkg/router/ping_router"
+	"github.com/sylphritz/go-api-server/pkg/router/user_router"
 )
 
 func SetupRoutes(r *gin.Engine) {
-	ping.SetupRoutes(r)
-	user.SetupRoutes(r)
+	ping_router.SetupRoutes(r)
+	user_router.SetupRoutes(r)
+	auth_router.SetupRoutes(r)
 }

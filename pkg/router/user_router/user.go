@@ -1,14 +1,13 @@
-package user
+package user_router
 
 import (
-	"path"
-
 	"github.com/gin-gonic/gin"
 	"github.com/sylphritz/go-api-server/pkg/controller"
+	"github.com/sylphritz/go-api-server/pkg/util"
 )
 
 var BasePath string = "/users"
 
 func SetupRoutes(r *gin.Engine) {
-	r.POST(path.Join(BasePath, "/"), controller.RegisterUser)
+	r.POST(util.GetApiPath(BasePath, "/"), controller.RegisterUser)
 }

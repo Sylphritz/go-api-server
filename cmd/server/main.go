@@ -7,6 +7,8 @@ import (
 )
 
 func main() {
+	config.LoadEnv()
+
 	db.Connect()
 	server.StartServer(config.GetConfig().Port)
 }
