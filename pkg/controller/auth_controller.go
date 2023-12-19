@@ -63,6 +63,5 @@ func ExchangeToken(c *gin.Context) {
 		return
 	}
 
-	// TODO: Should be find or create instead
-	service.CreateUser(user)
+	service.UpdateOrCreateUser(user)
 }
