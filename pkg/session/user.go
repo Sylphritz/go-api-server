@@ -2,7 +2,6 @@ package session
 
 import (
 	"encoding/gob"
-	"fmt"
 
 	"github.com/gorilla/sessions"
 	"github.com/sylphritz/go-api-server/pkg/config"
@@ -31,9 +30,6 @@ func SetUserSession(s *sessions.Session, u *schema.User, infinite bool) {
 		Email:         u.Email,
 		Authenticated: true,
 	}
-
-	fmt.Println(s.Values[userKey])
-	fmt.Println(u)
 }
 
 func IsUserSessionValid(s *sessions.Session) bool {
