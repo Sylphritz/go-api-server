@@ -7,6 +7,7 @@ import (
 )
 
 type AppConfig struct {
+	AppName                 string
 	Port                    int
 	DbHost                  string
 	DbPort                  int
@@ -16,16 +17,24 @@ type AppConfig struct {
 	OAuthGoogleClientID     string
 	OAuthGoogleClientSecret string
 	OAuthGoogleCallbackURL  string
+	SessionSecret           string
+	SessionDuration         int
+	SessionKey              string
 }
 
 var defaultConfig = AppConfig{
-	Port:       8080,
-	DbHost:     "localhost",
-	DbPort:     5432,
-	DbUser:     "admin",
-	DbPassword: "1234",
-	DbName:     "testlocal",
+	AppName:         "application",
+	Port:            8080,
+	DbHost:          "localhost",
+	DbPort:          5432,
+	DbUser:          "admin",
+	DbPassword:      "1234",
+	DbName:          "testlocal",
+	SessionDuration: 3600,
+	SessionKey:      "session",
 }
+
+var appConfig AppConfig
 
 func withDefault(v, defaultValue string) string {
 	value, found := os.LookupEnv(v)
@@ -51,8 +60,9 @@ func withDefaultInt(v string, defaultValue int) int {
 	return defaultValue
 }
 
-func GetConfig() AppConfig {
-	appConfig := AppConfig{
+func SetConfig() {
+	appConfig = AppConfig{
+		AppName:                 withDefault("APP_NAME", defaultConfig.AppName),
 		Port:                    withDefaultInt("APP_PORT", defaultConfig.Port),
 		DbHost:                  withDefault("POSTGRES_HOSTNAME", defaultConfig.DbHost),
 		DbPort:                  withDefaultInt("POSTGRES_PORT", defaultConfig.DbPort),
@@ -62,7 +72,12 @@ func GetConfig() AppConfig {
 		OAuthGoogleClientID:     withDefault("OAUTH_GOOGLE_CLIENT_ID", defaultConfig.OAuthGoogleClientID),
 		OAuthGoogleClientSecret: withDefault("OAUTH_GOOGLE_CLIENT_SECRET", defaultConfig.OAuthGoogleClientSecret),
 		OAuthGoogleCallbackURL:  withDefault("OAUTH_GOOGLE_CALLBACK_URL", defaultConfig.OAuthGoogleCallbackURL),
+		SessionSecret:           withDefault("SESSION_SECRET", defaultConfig.SessionSecret),
+		SessionDuration:         withDefaultInt("SESSION_DURATION", defaultConfig.SessionDuration),
+		SessionKey:              withDefault("SESSION_KEY", defaultConfig.SessionSecret),
 	}
+}
 
+func GetConfig() AppConfig {
 	return appConfig
 }

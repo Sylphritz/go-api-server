@@ -32,3 +32,10 @@ func NewConflictError(message string) ErrorResponse {
 func RespondWithError(c *gin.Context, err ErrorResponse) {
 	c.AbortWithStatusJSON(err.Code, err)
 }
+
+func RespondInternalErrorWithMessage(c *gin.Context, err error) {
+	RespondWithError(c, NewErrorResponse(
+		http.StatusInternalServerError,
+		err.Error(),
+	))
+}

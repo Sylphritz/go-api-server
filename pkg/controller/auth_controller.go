@@ -1,13 +1,13 @@
 package controller
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sylphritz/go-api-server/pkg/auth"
 	"github.com/sylphritz/go-api-server/pkg/db/service"
 	"github.com/sylphritz/go-api-server/pkg/response"
+	"github.com/sylphritz/go-api-server/pkg/session"
 	"golang.org/x/oauth2"
 )
 
@@ -46,22 +46,44 @@ func ExchangeToken(c *gin.Context) {
 	config.RedirectURL = request.CallbackURL
 	token, err := config.Exchange(c.Request.Context(), request.AuthCode, oauth2.VerifierOption(request.Verifier))
 	if err != nil {
-		response.RespondWithError(c, response.NewErrorResponse(
-			http.StatusInternalServerError,
-			err.Error(),
-		))
+		response.RespondInternalErrorWithMessage(c, err)
 		return
 	}
 
 	user, err := auth.GetGoogleUserInfo(token)
 	if err != nil {
-		log.Println(err)
-		response.RespondWithError(c, response.NewErrorResponse(
-			http.StatusInternalServerError,
-			err.Error(),
-		))
+		response.RespondInternalErrorWithMessage(c, err)
 		return
 	}
 
-	service.UpdateOrCreateUser(user)
+	err = service.UpdateOrCreateUser(user)
+	if err != nil {
+		response.RespondInternalErrorWithMessage(c, err)
+		return
+	}
+
+	userSession, err := session.GetSession(c.Request)
+	if err != nil {
+		response.RespondInternalErrorWithMessage(c, err)
+		return
+	}
+
+	session.SetUserSession(userSession, user, false)
+	err = userSession.Save(c.Request, c.Writer)
+	if err != nil {
+		response.RespondInternalErrorWithMessage(c, err)
+		return
+	}
+
+	c.JSON(http.StatusOK, struct{}{})
+}
+
+func CheckValidSession(c *gin.Context) {
+	userSession, err := session.GetSession(c.Request)
+	if err != nil {
+		response.RespondInternalErrorWithMessage(c, err)
+		return
+	}
+
+	c.JSON(http.StatusOK, session.IsUserSessionValid(userSession))
 }
