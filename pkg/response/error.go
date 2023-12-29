@@ -25,6 +25,10 @@ func NewBadRequestError(message string) ErrorResponse {
 	return NewErrorResponse(http.StatusBadRequest, message)
 }
 
+func NewUnauthorizedError(message string) ErrorResponse {
+	return NewErrorResponse(http.StatusUnauthorized, message)
+}
+
 func NewConflictError(message string) ErrorResponse {
 	return NewErrorResponse(http.StatusConflict, message)
 }
