@@ -9,11 +9,12 @@ import (
 )
 
 type UserSessionInfo struct {
+	ID            uint   `json:"id"`
 	Email         string `json:"email"`
 	Authenticated bool   `json:"authenticated"`
 }
 
-const userKey = "user"
+const UserKey = "user"
 
 func Init() {
 	gob.Register(&UserSessionInfo{})
@@ -26,14 +27,15 @@ func SetUserSession(s *sessions.Session, u *schema.User, infinite bool) {
 		s.Options.MaxAge = config.GetConfig().SessionDuration
 	}
 
-	s.Values[userKey] = UserSessionInfo{
+	s.Values[UserKey] = UserSessionInfo{
+		ID:            u.ID,
 		Email:         u.Email,
 		Authenticated: true,
 	}
 }
 
 func IsUserSessionValid(s *sessions.Session) bool {
-	u, ok := s.Values[userKey].(*UserSessionInfo)
+	u, ok := s.Values[UserKey].(*UserSessionInfo)
 
 	return ok && u.Authenticated
 }

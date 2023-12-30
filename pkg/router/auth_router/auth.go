@@ -11,5 +11,5 @@ var BasePath string = "/auth"
 func SetupRoutes(r *gin.Engine) {
 	r.POST(util.GetApiPath(BasePath, "/google"), controller.GetGoogleOAuthURL)
 	r.POST(util.GetApiPath(BasePath, "/google/exchange"), controller.ExchangeToken)
-	r.POST(util.GetApiPath(BasePath, "/ping"), controller.CheckValidSession)
+	r.POST(util.GetApiPath(BasePath, "/session"), controller.CheckValidSession)
 }

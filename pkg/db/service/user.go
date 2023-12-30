@@ -1,9 +1,16 @@
 package service
 
 import (
+	"log"
+
 	"github.com/sylphritz/go-api-server/pkg/db"
 	"github.com/sylphritz/go-api-server/pkg/db/schema"
 )
+
+func GetUserById(id uint, user *schema.User) {
+	log.Println(id)
+	db.DB.First(&user, id)
+}
 
 func CreateUser(user *schema.User) error {
 	result := db.DB.Create(&user)
@@ -12,10 +19,9 @@ func CreateUser(user *schema.User) error {
 }
 
 func UpdateOrCreateUser(user *schema.User) error {
-	var foundUser schema.User
-	result := db.DB.Where(schema.User{Email: user.Email}).Assign(&user).FirstOrCreate(&foundUser)
+	result := db.DB.Where(schema.User{Email: user.Email}).Assign(&user).FirstOrCreate(&user)
 
-	db.DB.Updates(foundUser)
+	db.DB.Updates(user)
 
 	if db.DB.Error != nil {
 		return db.DB.Error

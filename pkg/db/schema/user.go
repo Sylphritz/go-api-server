@@ -7,7 +7,7 @@ import (
 type User struct {
 	gorm.Model
 	Email                   string `gorm:"uniqueIndex;not null"`
-	Password                string
-	GoogleOAuthToken        string
-	GoogleOAuthRefreshToken string
+	Password                string `json:"-"`
+	GoogleOAuthToken        string `json:"-"`
+	GoogleOAuthRefreshToken string `json:"-"`
 }

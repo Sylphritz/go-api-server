@@ -1,10 +1,12 @@
 package controller
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sylphritz/go-api-server/pkg/auth"
+	"github.com/sylphritz/go-api-server/pkg/db/schema"
 	"github.com/sylphritz/go-api-server/pkg/db/service"
 	"github.com/sylphritz/go-api-server/pkg/response"
 	"github.com/sylphritz/go-api-server/pkg/session"
@@ -85,5 +87,14 @@ func CheckValidSession(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, session.IsUserSessionValid(userSession))
+	if session.IsUserSessionValid(userSession) {
+		user := schema.User{}
+		fmt.Println(userSession.Values[session.UserKey].(*session.UserSessionInfo))
+		service.GetUserById(userSession.Values[session.UserKey].(*session.UserSessionInfo).ID, &user)
+
+		c.JSON(http.StatusOK, user)
+		return
+	}
+
+	c.JSON(http.StatusOK, false)
 }
