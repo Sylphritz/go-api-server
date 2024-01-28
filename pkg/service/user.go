@@ -1,14 +1,11 @@
 package service
 
 import (
-	"log"
-
 	"github.com/sylphritz/go-api-server/pkg/db"
 	"github.com/sylphritz/go-api-server/pkg/db/schema"
 )
 
 func GetUserById(id uint, user *schema.User) {
-	log.Println(id)
 	db.DB.First(&user, id)
 }
 

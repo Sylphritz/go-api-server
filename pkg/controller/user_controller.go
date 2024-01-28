@@ -6,8 +6,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/sylphritz/go-api-server/pkg/db/schema"
-	"github.com/sylphritz/go-api-server/pkg/db/service"
 	"github.com/sylphritz/go-api-server/pkg/response"
+	"github.com/sylphritz/go-api-server/pkg/service"
 	"github.com/sylphritz/go-api-server/pkg/util"
 )
 

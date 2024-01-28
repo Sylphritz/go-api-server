@@ -10,4 +10,7 @@ type User struct {
 	Password                string `json:"-"`
 	GoogleOAuthToken        string `json:"-"`
 	GoogleOAuthRefreshToken string `json:"-"`
+	CustomerID              string `json:"-"`
+	SubscriptionID          string `json:"-"`
+	PaymentMethodID         string `json:"-"`
 }

@@ -20,6 +20,8 @@ type AppConfig struct {
 	SessionSecret           string
 	SessionDuration         int
 	SessionKey              string
+	StripeKey               string
+	StripeSecret            string
 }
 
 var defaultConfig = AppConfig{
@@ -50,7 +52,7 @@ func withDefaultInt(v string, defaultValue int) int {
 	if found {
 		parsedValue, err := strconv.Atoi(value)
 		if err != nil {
-			log.Println("There's an error parsing an environment variable", v)
+			log.Println("There's an error parsing an environment variable:", v)
 			return defaultValue
 		}
 
@@ -75,6 +77,8 @@ func SetConfig() {
 		SessionSecret:           withDefault("SESSION_SECRET", defaultConfig.SessionSecret),
 		SessionDuration:         withDefaultInt("SESSION_DURATION", defaultConfig.SessionDuration),
 		SessionKey:              withDefault("SESSION_KEY", defaultConfig.SessionSecret),
+		StripeKey:               withDefault("STRIPE_KEY", defaultConfig.StripeKey),
+		StripeSecret:            withDefault("STRIPE_SECRET", defaultConfig.StripeSecret),
 	}
 }
 

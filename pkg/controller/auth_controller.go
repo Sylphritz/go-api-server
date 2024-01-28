@@ -7,8 +7,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/sylphritz/go-api-server/pkg/auth"
 	"github.com/sylphritz/go-api-server/pkg/db/schema"
-	"github.com/sylphritz/go-api-server/pkg/db/service"
 	"github.com/sylphritz/go-api-server/pkg/response"
+	"github.com/sylphritz/go-api-server/pkg/service"
 	"github.com/sylphritz/go-api-server/pkg/session"
 	"golang.org/x/oauth2"
 )
@@ -22,6 +22,7 @@ type RequestWithCallbackURL struct {
 	AuthCode    string `json:"auth_code"`
 	Verifier    string `json:"verifier"`
 	CallbackURL string `json:"callback_url"`
+	Infinite    bool   `json:"infinite"`
 }
 
 func GetGoogleOAuthURL(c *gin.Context) {
@@ -70,7 +71,7 @@ func ExchangeToken(c *gin.Context) {
 		return
 	}
 
-	session.SetUserSession(userSession, user, false)
+	session.SetUserSession(userSession, user, request.Infinite)
 	err = userSession.Save(c.Request, c.Writer)
 	if err != nil {
 		response.RespondInternalErrorWithMessage(c, err)
