@@ -22,6 +22,10 @@ type AppConfig struct {
 	SessionKey              string
 	StripeKey               string
 	StripeSecret            string
+	SmtpHost                string
+	SmtpPort                int
+	SmtpUsername            string
+	SmtpPassword            string
 }
 
 var defaultConfig = AppConfig{
@@ -79,6 +83,10 @@ func SetConfig() {
 		SessionKey:              withDefault("SESSION_KEY", defaultConfig.SessionSecret),
 		StripeKey:               withDefault("STRIPE_KEY", defaultConfig.StripeKey),
 		StripeSecret:            withDefault("STRIPE_SECRET", defaultConfig.StripeSecret),
+		SmtpHost:                withDefault("SMTP_SERVER_HOST", defaultConfig.SmtpHost),
+		SmtpPort:                withDefaultInt("SMTP_SERVER_PORT", defaultConfig.SmtpPort),
+		SmtpUsername:            withDefault("SMTP_SERVER_USERNAME", defaultConfig.SmtpUsername),
+		SmtpPassword:            withDefault("SMTP_SERVER_PASSWORD", defaultConfig.SmtpPassword),
 	}
 }
 
