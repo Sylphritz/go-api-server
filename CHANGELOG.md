@@ -1,3 +1,17 @@
+## 0.3.0 (2024-02-01)
+
+### Feat
+
+- **database**: add database tables for blogs, posts, and categoriess
+- **user**: add a route for retrieving logged in user information
+- **auth**: add a middleware for validating login status
+- **session**: implement user session management functions
+- **oauth**: integrate OAuth2 in the login flow
+
+### Fix
+
+- **user**: fix an issue where existing user cannot connect to their Google account
+
 ## 0.2.0 (2023-12-13)
 
 ### Feat
