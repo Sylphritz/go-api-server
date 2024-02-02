@@ -7,7 +7,6 @@ import (
 
 func MigrateSchemas(db *gorm.DB) {
 	db.AutoMigrate(
-		&schema.Todo{},
 		&schema.User{},
 		&schema.Blog{},
 		&schema.Category{},

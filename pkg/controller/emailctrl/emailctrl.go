@@ -1,4 +1,4 @@
-package controller
+package emailctrl
 
 import (
 	"net/http"

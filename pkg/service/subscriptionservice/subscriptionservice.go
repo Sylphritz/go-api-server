@@ -1,4 +1,4 @@
-package service
+package subscriptionservice
 
 import (
 	"log"
@@ -8,6 +8,7 @@ import (
 	"github.com/stripe/stripe-go/product"
 	"github.com/sylphritz/go-api-server/pkg/config"
 	"github.com/sylphritz/go-api-server/pkg/db/schema"
+	"github.com/sylphritz/go-api-server/pkg/service/userservice"
 )
 
 func GetSubscriptionPlans() {
@@ -55,7 +56,7 @@ func FindOrCreateCustomer(user *schema.User) (*stripe.Customer, error) {
 	}
 
 	user.CustomerID = c.ID
-	err = UpdateOrCreateUser(user)
+	err = userservice.UpdateOrCreateUser(user)
 	if err != nil {
 		return nil, err
 	}

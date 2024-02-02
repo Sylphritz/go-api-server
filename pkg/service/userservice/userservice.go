@@ -1,4 +1,4 @@
-package service
+package userservice
 
 import (
 	"github.com/sylphritz/go-api-server/pkg/db"

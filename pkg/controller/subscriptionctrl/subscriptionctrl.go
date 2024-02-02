@@ -1,4 +1,4 @@
-package controller
+package subscriptionctrl
 
 import (
 	"net/http"

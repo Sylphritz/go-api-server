@@ -1,4 +1,4 @@
-package controller
+package authctrl
 
 import (
 	"fmt"
@@ -6,9 +6,10 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/sylphritz/go-api-server/pkg/auth"
+	"github.com/sylphritz/go-api-server/pkg/controller"
 	"github.com/sylphritz/go-api-server/pkg/db/schema"
 	"github.com/sylphritz/go-api-server/pkg/response"
-	"github.com/sylphritz/go-api-server/pkg/service"
+	"github.com/sylphritz/go-api-server/pkg/service/userservice"
 	"github.com/sylphritz/go-api-server/pkg/session"
 	"golang.org/x/oauth2"
 )
@@ -28,7 +29,7 @@ type RequestWithCallbackURL struct {
 func GetGoogleOAuthURL(c *gin.Context) {
 	var request RequestWithCallbackURL
 
-	ok := getRequiredBodyFields[RequestWithCallbackURL](c, &request)
+	ok := controller.GetRequiredBodyFields[RequestWithCallbackURL](c, &request)
 	if !ok {
 		return
 	}
@@ -40,7 +41,7 @@ func GetGoogleOAuthURL(c *gin.Context) {
 func ExchangeToken(c *gin.Context) {
 	var request RequestWithCallbackURL
 
-	ok := getRequiredBodyFields[RequestWithCallbackURL](c, &request)
+	ok := controller.GetRequiredBodyFields[RequestWithCallbackURL](c, &request)
 	if !ok {
 		return
 	}
@@ -59,7 +60,7 @@ func ExchangeToken(c *gin.Context) {
 		return
 	}
 
-	err = service.UpdateOrCreateUser(user)
+	err = userservice.UpdateOrCreateUser(user)
 	if err != nil {
 		response.RespondInternalErrorWithMessage(c, err)
 		return
@@ -91,7 +92,7 @@ func CheckValidSession(c *gin.Context) {
 	if session.IsUserSessionValid(userSession) {
 		user := schema.User{}
 		fmt.Println(userSession.Values[session.UserKey].(*session.UserSessionInfo))
-		service.GetUserById(userSession.Values[session.UserKey].(*session.UserSessionInfo).ID, &user)
+		userservice.GetUserById(userSession.Values[session.UserKey].(*session.UserSessionInfo).ID, &user)
 
 		c.JSON(http.StatusOK, user)
 		return

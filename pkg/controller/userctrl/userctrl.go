@@ -1,13 +1,14 @@
-package controller
+package userctrl
 
 import (
 	"net/http"
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/sylphritz/go-api-server/pkg/controller"
 	"github.com/sylphritz/go-api-server/pkg/db/schema"
 	"github.com/sylphritz/go-api-server/pkg/response"
-	"github.com/sylphritz/go-api-server/pkg/service"
+	"github.com/sylphritz/go-api-server/pkg/service/userservice"
 	"github.com/sylphritz/go-api-server/pkg/util"
 )
 
@@ -20,7 +21,7 @@ func isDuplicateEmail(err error) bool {
 }
 
 func RegisterUser(c *gin.Context) {
-	data, ok := getRequiredFormFields(c, []string{"email", "password"})
+	data, ok := controller.GetRequiredFormFields(c, []string{"email", "password"})
 	if !ok {
 		return
 	}
@@ -36,7 +37,7 @@ func RegisterUser(c *gin.Context) {
 		Password: hashedPassword,
 	}
 
-	err = service.CreateUser(&user)
+	err = userservice.CreateUser(&user)
 	if err != nil {
 		if isDuplicateEmail(err) {
 			response.RespondWithError(c, response.NewConflictError("Email already exists."))
