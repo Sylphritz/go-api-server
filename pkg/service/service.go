@@ -4,11 +4,17 @@ import (
 	"log"
 
 	"github.com/sylphritz/go-api-server/pkg/db"
+	"gorm.io/gorm"
 )
 
+type ForeignKeyQuery struct {
+	Key   string
+	Value any
+}
+
 type DatabaseService[T any] interface {
-	FindAll(page, perPage int) (*[]T, error)
-	FindByID(id uint) (*T, error)
+	FindAll(page, perPage int, foreignKey *ForeignKeyQuery) (*[]T, error)
+	FindByID(id uint, foreignKey *ForeignKeyQuery) (*T, error)
 	Create(entity *T) error
 	Update(entity *T) error
 	Delete(id uint) error
@@ -18,18 +24,26 @@ type Service[T any] struct {
 	Name string
 }
 
-const DefaultPerPage = 10
+func getDbWhereQuery(foreignKey *ForeignKeyQuery) *gorm.DB {
+	if foreignKey.Key != "" {
+		return db.DB.Where(foreignKey.Key+" = ?", foreignKey.Value)
+	}
+
+	return db.DB
+}
+
+const DefaultPage, DefaultPerPage = 1, 10
 
 func NewService[T any](name string) *Service[T] {
 	return &Service[T]{Name: name}
 }
 
-func (serv *Service[T]) FindAll(page, perPage int) (*[]T, error) {
+func (serv *Service[T]) FindAll(page, perPage int, foreignKey *ForeignKeyQuery) (*[]T, error) {
 	var results []T
 
 	offset := (page - 1) * perPage
 
-	result := db.DB.Offset(offset).Limit(perPage).Find(&results)
+	result := getDbWhereQuery(foreignKey).Offset(offset).Limit(perPage).Find(&results)
 	if result.Error != nil {
 		log.Printf("An error has occurred while trying to query %v: %v", serv.Name, result.Error)
 		return nil, result.Error
@@ -38,10 +52,10 @@ func (serv *Service[T]) FindAll(page, perPage int) (*[]T, error) {
 	return &results, nil
 }
 
-func (serv *Service[T]) FindById(id uint) (*T, error) {
+func (serv *Service[T]) FindById(id uint, foreignKey *ForeignKeyQuery) (*T, error) {
 	var item T
 
-	result := db.DB.First(&item, id)
+	result := getDbWhereQuery(foreignKey).First(&item, id)
 	if result.Error != nil {
 		log.Printf("An error has occurred while trying to query %v: %v", serv.Name, result.Error)
 		return nil, result.Error
@@ -63,4 +77,17 @@ func (serv *Service[T]) Delete(id uint) error {
 	var entity T
 
 	return db.DB.Delete(&entity, id).Error
+}
+
+func (serv *Service[T]) Count(foreignKey *ForeignKeyQuery) (int64, error) {
+	var model T
+	var count int64
+
+	result := getDbWhereQuery(foreignKey).Model(&model).Count(&count)
+	if result.Error != nil {
+		log.Printf("An error has occurred while trying to count %v: %v", serv.Name, result.Error)
+		return count, result.Error
+	}
+
+	return count, nil
 }

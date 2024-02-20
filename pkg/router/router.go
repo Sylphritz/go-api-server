@@ -3,6 +3,7 @@ package router
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/sylphritz/go-api-server/pkg/router/authrouter"
+	"github.com/sylphritz/go-api-server/pkg/router/blogrouter"
 	"github.com/sylphritz/go-api-server/pkg/router/emailrouter"
 	"github.com/sylphritz/go-api-server/pkg/router/pingrouter"
 	"github.com/sylphritz/go-api-server/pkg/router/subscriptionrouter"
@@ -15,4 +16,5 @@ func SetupRoutes(r *gin.Engine) {
 	authrouter.SetupRoutes(r)
 	subscriptionrouter.SetupRoutes(r)
 	emailrouter.SetupRoutes(r)
+	blogrouter.SetupRoutes(r)
 }

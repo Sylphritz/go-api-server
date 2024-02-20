@@ -35,3 +35,12 @@ func GetRequiredBodyFields[S any](c *gin.Context, b *S) bool {
 
 	return true
 }
+
+func GetRequiredQueryParams[S any](c *gin.Context, b *S) bool {
+	if err := c.BindQuery(&b); err != nil {
+		response.RespondWithError(c, response.NewBadRequestError(err.Error()))
+		return false
+	}
+
+	return true
+}
