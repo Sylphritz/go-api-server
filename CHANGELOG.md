@@ -1,3 +1,15 @@
+## 1.0.0 (2024-02-26)
+
+### Feat
+
+- **auth-middleware**: auth middleware now passes along user information to controllers
+- **controller**: refactor the service functions and add a reusable generic CRUD controller
+- **service**: add service functions for querying post, category, and blog data from the database
+
+### Refactor
+
+- **app**: update naming convention to match the Golang standard
+
 ## 0.3.0 (2024-02-01)
 
 ### Feat
