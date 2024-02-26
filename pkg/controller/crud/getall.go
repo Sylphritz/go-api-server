@@ -8,6 +8,7 @@ import (
 	"github.com/sylphritz/go-api-server/pkg/controller"
 	"github.com/sylphritz/go-api-server/pkg/response"
 	"github.com/sylphritz/go-api-server/pkg/service"
+	"github.com/sylphritz/go-api-server/pkg/session"
 )
 
 func (crud CrudCtrl[T]) GetAll(c *gin.Context) {
@@ -22,12 +23,13 @@ func (crud CrudCtrl[T]) GetAll(c *gin.Context) {
 		return
 	}
 
-	page, perPage, id, ok := GetPaginationQueryParams(c, &request)
+	page, perPage, ok := GetPaginationQueryParams(c, &request)
 	if !ok {
 		return
 	}
 
-	foreignKey := service.ForeignKeyQuery{Key: crud.ForeignKey, Value: id}
+	userInfo := c.MustGet(session.UserKey).(*session.UserSessionInfo)
+	foreignKey := service.ForeignKeyQuery{Key: crud.ForeignKey, Value: userInfo.ID}
 
 	items, err := serv.FindAll(page, perPage, &foreignKey)
 	if err != nil {

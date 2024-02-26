@@ -66,11 +66,7 @@ func ExchangeToken(c *gin.Context) {
 		return
 	}
 
-	userSession, err := session.GetSession(c.Request)
-	if err != nil {
-		response.RespondInternalErrorWithMessage(c, err)
-		return
-	}
+	userSession := session.NewSession(c.Request)
 
 	session.SetUserSession(userSession, user, request.Infinite)
 	err = userSession.Save(c.Request, c.Writer)
@@ -98,5 +94,5 @@ func CheckValidSession(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, false)
+	c.JSON(http.StatusUnauthorized, false)
 }

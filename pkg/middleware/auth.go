@@ -1,6 +1,8 @@
 package middleware
 
 import (
+	"errors"
+
 	"github.com/gin-gonic/gin"
 	"github.com/sylphritz/go-api-server/pkg/response"
 	"github.com/sylphritz/go-api-server/pkg/session"
@@ -20,6 +22,14 @@ func AuthMiddleware(c *gin.Context) {
 		response.RespondWithError(c, response.NewUnauthorizedError("Unauthorized"))
 		return
 	}
+
+	u, ok := session.UserInfo(userSession)
+	if !ok {
+		response.RespondInternalErrorWithMessage(c, errors.New("error: could not get user info from cookie"))
+		return
+	}
+
+	c.Set(session.UserKey, u)
 
 	c.Next()
 }

@@ -14,6 +14,15 @@ func GetCookieStore() *sessions.CookieStore {
 	return store
 }
 
+func NewSession(r *http.Request) *sessions.Session {
+	config := config.GetConfig()
+	store := GetCookieStore()
+
+	s, _ := store.New(r, config.SessionKey)
+
+	return s
+}
+
 func GetSession(r *http.Request) (*sessions.Session, error) {
 	config := config.GetConfig()
 	store := GetCookieStore()

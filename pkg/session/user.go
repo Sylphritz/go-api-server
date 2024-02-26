@@ -20,6 +20,12 @@ func Init() {
 	gob.Register(&UserSessionInfo{})
 }
 
+func UserInfo(s *sessions.Session) (*UserSessionInfo, bool) {
+	u, ok := s.Values[UserKey].(*UserSessionInfo)
+
+	return u, ok
+}
+
 func SetUserSession(s *sessions.Session, u *schema.User, infinite bool) {
 	if infinite {
 		s.Options.MaxAge = 31536000 // One year
@@ -35,7 +41,7 @@ func SetUserSession(s *sessions.Session, u *schema.User, infinite bool) {
 }
 
 func IsUserSessionValid(s *sessions.Session) bool {
-	u, ok := s.Values[UserKey].(*UserSessionInfo)
+	u, ok := UserInfo(s)
 
 	return ok && u.Authenticated
 }

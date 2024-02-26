@@ -15,6 +15,6 @@ type User struct {
 	CustomerID              string        `json:"-"`
 	SubscriptionID          string        `json:"-"`
 	PaymentMethodID         string        `json:"-"`
-	Blogs                   []Blog        `json:"blogs"`
-	Posts                   []Post        `json:"posts"`
+	Blogs                   []Blog        `json:"-"`
+	Posts                   []Post        `json:"-"`
 }
