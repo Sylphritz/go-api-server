@@ -10,17 +10,12 @@ import (
 	"github.com/sylphritz/go-api-server/pkg/session"
 )
 
-func (crud CrudCtrl[T]) GetAll(c *gin.Context) {
+func (crud CrudCtrl[T]) GetById(c *gin.Context) {
 	serv := service.NewService[T](crud.Name)
 
-	var request PaginatedRequest
+	var params GetByIdRouteParams
 
-	ok := controller.GetRequiredQueryParams[PaginatedRequest](c, &request)
-	if !ok {
-		return
-	}
-
-	page, perPage, ok := GetPaginationQueryParams(c, &request)
+	ok := controller.GetRouteParams[GetByIdRouteParams](c, &params)
 	if !ok {
 		return
 	}
@@ -28,21 +23,14 @@ func (crud CrudCtrl[T]) GetAll(c *gin.Context) {
 	userInfo := c.MustGet(session.UserKey).(*session.UserSessionInfo)
 	foreignKey := service.ForeignKeyQuery{Key: crud.ForeignKey, Value: userInfo.ID}
 
-	items, err := serv.FindAll(page, perPage, &foreignKey)
+	item, err := serv.FindById(params.ID, &foreignKey)
 	if err != nil {
 		response.RespondInternalErrorWithMessage(c, err)
 		return
 	}
 
-	count, err := serv.Count(&foreignKey)
-	if err != nil {
-		response.RespondInternalErrorWithMessage(c, err)
-		return
-	}
-
-	c.JSON(http.StatusOK, PaginatedResponse[T]{
+	c.JSON(http.StatusOK, Response[T]{
 		true,
-		*items,
-		Pagination{page, perPage, count},
+		*item,
 	})
 }

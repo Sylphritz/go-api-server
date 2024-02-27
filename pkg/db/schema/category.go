@@ -1,13 +1,9 @@
 package schema
 
-import (
-	"gorm.io/gorm"
-)
-
 type Category struct {
-	gorm.Model
+	BaseEntity
 	Name        string `gorm:"uniqueIndex;not null" json:"name"`
 	Description string `json:"description"`
-	Posts       []Post `json:"posts"`
+	Posts       []Post `json:"-"`
 	BlogID      uint   `json:"blogId"`
 }

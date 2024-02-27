@@ -2,6 +2,7 @@ package crud
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/sylphritz/go-api-server/pkg/db/schema"
 	"github.com/sylphritz/go-api-server/pkg/service"
 	"github.com/sylphritz/go-api-server/pkg/util"
 )
@@ -14,7 +15,7 @@ type CrudController[T any] interface {
 	Delete(c *gin.Context)
 }
 
-type CrudCtrl[T any] struct {
+type CrudCtrl[T schema.CommonEntity] struct {
 	Name       string
 	ForeignKey string
 }
@@ -25,9 +26,18 @@ type Pagination struct {
 	Total   int64 `json:"total"`
 }
 
+type GetByIdRouteParams struct {
+	ID uint `json:"id" form:"id"`
+}
+
 type PaginatedRequest struct {
 	Page    string `json:"page" form:"page"`
 	PerPage string `json:"perPage" form:"perPage"`
+}
+
+type Response[T any] struct {
+	Success bool `json:"success"`
+	Data    T    `json:"data"`
 }
 
 type PaginatedResponse[T any] struct {
@@ -43,6 +53,6 @@ func GetPaginationQueryParams(c *gin.Context, r *PaginatedRequest) (int, int, bo
 	return page, perPage, true
 }
 
-func NewController[T any](name, foreignKey string) *CrudCtrl[T] {
+func NewController[T schema.CommonEntity](name, foreignKey string) *CrudCtrl[T] {
 	return &CrudCtrl[T]{name, foreignKey}
 }

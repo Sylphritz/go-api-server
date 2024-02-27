@@ -44,3 +44,12 @@ func GetRequiredQueryParams[S any](c *gin.Context, b *S) bool {
 
 	return true
 }
+
+func GetRouteParams[S any](c *gin.Context, b *S) bool {
+	if err := c.BindUri(&b); err != nil {
+		response.RespondWithError(c, response.NewBadRequestError(err.Error()))
+		return false
+	}
+
+	return true
+}
