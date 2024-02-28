@@ -2,8 +2,8 @@ package schema
 
 type Category struct {
 	BaseEntity
-	Name        string `gorm:"uniqueIndex;not null" json:"name"`
+	Name        string `gorm:"uniqueIndex:idx_category_name_blog_id;not null" json:"name"`
 	Description string `json:"description"`
 	Posts       []Post `json:"-"`
-	BlogID      uint   `json:"blogId"`
+	BlogID      uint   `gorm:"uniqueIndex:idx_category_name_blog_id;not null" json:"blogId"`
 }

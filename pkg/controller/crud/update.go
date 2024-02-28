@@ -1,7 +1,6 @@
 package crud
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -11,29 +10,26 @@ import (
 	"github.com/sylphritz/go-api-server/pkg/session"
 )
 
-func (crud CrudCtrl[T]) GetById(c *gin.Context) {
+func (crud CrudCtrl[T]) Update(c *gin.Context) {
 	serv := service.NewService[T](crud.Name)
 
-	var params GetByIdRouteParams
+	var entity T
 
-	ok := controller.GetRouteParams[GetByIdRouteParams](c, &params)
+	ok := controller.GetRequiredBodyFields[T](c, &entity)
 	if !ok {
 		return
 	}
 
-	log.Printf("Params: %v\n", params)
-
 	userInfo := c.MustGet(session.UserKey).(*session.UserSessionInfo)
 	foreignKey := service.ForeignKeyQuery{Key: crud.ForeignKey, Value: userInfo.ID}
 
-	item, err := serv.FindById(params.ID, &foreignKey)
+	err := serv.Update(&entity, &foreignKey)
 	if err != nil {
 		response.RespondInternalErrorWithMessage(c, err)
 		return
 	}
 
-	c.JSON(http.StatusOK, Response[T]{
+	c.JSON(http.StatusOK, EmptyResponse[T]{
 		true,
-		*item,
 	})
 }

@@ -27,7 +27,7 @@ type Pagination struct {
 }
 
 type GetByIdRouteParams struct {
-	ID uint `json:"id" form:"id"`
+	ID uint `json:"id" uri:"id"`
 }
 
 type PaginatedRequest struct {
@@ -44,6 +44,10 @@ type PaginatedResponse[T any] struct {
 	Success    bool       `json:"success"`
 	Data       []T        `json:"data"`
 	Pagination Pagination `json:"pagination"`
+}
+
+type EmptyResponse[T any] struct {
+	Success bool `json:"success"`
 }
 
 func GetPaginationQueryParams(c *gin.Context, r *PaginatedRequest) (int, int, bool) {

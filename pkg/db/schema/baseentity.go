@@ -1,6 +1,10 @@
 package schema
 
-import "gorm.io/gorm"
+import (
+	"log"
+
+	"gorm.io/gorm"
+)
 
 type CommonEntity interface {
 	GetUserID() uint
@@ -17,5 +21,7 @@ func (b *BaseEntity) GetUserID() uint {
 }
 
 func (b *BaseEntity) SetUserID(id uint) {
+	log.Printf("before set user id: %v\n", b)
 	b.UserID = id
+	log.Printf("after set user id: %v\n", b)
 }

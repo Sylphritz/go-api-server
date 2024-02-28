@@ -68,15 +68,15 @@ func (serv *Service[T]) Create(entity *T) error {
 	return db.DB.Create(entity).Error
 }
 
-func (serv *Service[T]) Update(entity *T) error {
-	return db.DB.Save(entity).Error
+func (serv *Service[T]) Update(entity *T, foreignKey *ForeignKeyQuery) error {
+	return getDbWhereQuery(foreignKey).Updates(entity).Error
 }
 
-func (serv *Service[T]) Delete(id uint) error {
+func (serv *Service[T]) Delete(id uint, foreignKey *ForeignKeyQuery) error {
 	// The model is needed so the DB knows which table to perform delete
 	var entity T
 
-	return db.DB.Delete(&entity, id).Error
+	return getDbWhereQuery(foreignKey).Delete(&entity, id).Error
 }
 
 func (serv *Service[T]) Count(foreignKey *ForeignKeyQuery) (int64, error) {
