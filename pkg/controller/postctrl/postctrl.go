@@ -1,4 +1,4 @@
-package blogctrl
+package postctrl
 
 import (
 	"github.com/sylphritz/go-api-server/pkg/controller/crud"
@@ -6,8 +6,8 @@ import (
 	"github.com/sylphritz/go-api-server/pkg/service/blogservice"
 )
 
-func BlogController() *crud.CrudCtrl[*schema.Blog] {
-	return crud.NewController[*schema.Blog](
+func PostController() *crud.CrudCtrl[*schema.Post] {
+	return crud.NewController[*schema.Post](
 		blogservice.Name,
 		schema.UserIdColumnName,
 	)

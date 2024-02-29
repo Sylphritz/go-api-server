@@ -6,6 +6,8 @@ import (
 	"gorm.io/gorm"
 )
 
+const UserIdColumnName = "user_id"
+
 type CommonEntity interface {
 	GetUserID() uint
 	SetUserID(id uint)
