@@ -1,3 +1,19 @@
+## 1.1.0 (2024-03-03)
+
+### Feat
+
+- **controller**: add controllers and routes for category and post
+- **services-and-controller**: add update and delete controller, refactor the schema, and update the update and delete service
+
+### Fix
+
+- **service**: fix duplicated service package names, variable names, and function names
+- **schema**: change the unique index of category from title to slug
+
+### Refactor
+
+- **controller-and-schema**: refactor schema models to support generic interface for models with shared fields
+
 ## 1.0.0 (2024-02-26)
 
 ### Feat
