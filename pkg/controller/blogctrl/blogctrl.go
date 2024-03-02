@@ -7,7 +7,7 @@ import (
 )
 
 func BlogController() *crud.CrudCtrl[*schema.Blog] {
-	return crud.NewController[*schema.Blog](
+	return crud.NewCrudController[*schema.Blog](
 		blogservice.Name,
 		schema.UserIdColumnName,
 	)

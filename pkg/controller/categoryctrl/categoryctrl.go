@@ -3,12 +3,12 @@ package categoryctrl
 import (
 	"github.com/sylphritz/go-api-server/pkg/controller/crud"
 	"github.com/sylphritz/go-api-server/pkg/db/schema"
-	"github.com/sylphritz/go-api-server/pkg/service/blogservice"
+	"github.com/sylphritz/go-api-server/pkg/service/categoryservice"
 )
 
 func CategoryController() *crud.CrudCtrl[*schema.Category] {
-	return crud.NewController[*schema.Category](
-		blogservice.Name,
+	return crud.NewCrudController[*schema.Category](
+		categoryservice.Name,
 		schema.UserIdColumnName,
 	)
 }

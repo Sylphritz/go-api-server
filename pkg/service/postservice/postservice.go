@@ -1,4 +1,4 @@
-package blogservice
+package postservice
 
 import (
 	"github.com/sylphritz/go-api-server/pkg/db/schema"
@@ -7,6 +7,6 @@ import (
 
 const Name = "Post"
 
-func NewPostService() *service.Service[schema.Post] {
+func NewService() *service.Service[schema.Post] {
 	return service.NewService[schema.Post](Name)
 }

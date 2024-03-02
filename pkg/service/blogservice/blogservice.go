@@ -7,6 +7,6 @@ import (
 
 const Name = "Blog"
 
-func NewBlogService(foreignKey *service.ForeignKeyQuery) *service.Service[schema.Blog] {
+func NewService(foreignKey *service.ForeignKeyQuery) *service.Service[schema.Blog] {
 	return service.NewService[schema.Blog](Name)
 }

@@ -57,6 +57,6 @@ func GetPaginationQueryParams(c *gin.Context, r *PaginatedRequest) (int, int, bo
 	return page, perPage, true
 }
 
-func NewController[T schema.CommonEntity](name, foreignKey string) *CrudCtrl[T] {
+func NewCrudController[T schema.CommonEntity](name, foreignKey string) *CrudCtrl[T] {
 	return &CrudCtrl[T]{name, foreignKey}
 }
