@@ -6,6 +6,7 @@ import (
 	"github.com/sylphritz/go-api-server/pkg/router/blogrouter"
 	"github.com/sylphritz/go-api-server/pkg/router/categoryrouter"
 	"github.com/sylphritz/go-api-server/pkg/router/emailrouter"
+	"github.com/sylphritz/go-api-server/pkg/router/pagerouter"
 	"github.com/sylphritz/go-api-server/pkg/router/pingrouter"
 	"github.com/sylphritz/go-api-server/pkg/router/postrouter"
 	"github.com/sylphritz/go-api-server/pkg/router/subscriptionrouter"
@@ -21,4 +22,5 @@ func SetupRoutes(r *gin.Engine) {
 	blogrouter.SetupRoutes(r)
 	categoryrouter.SetupRoutes(r)
 	postrouter.SetupRoutes(r)
+	pagerouter.SetupRoutes(r)
 }

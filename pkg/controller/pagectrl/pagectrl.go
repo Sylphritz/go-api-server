@@ -6,7 +6,7 @@ import (
 	"github.com/sylphritz/go-api-server/pkg/service/pageservice"
 )
 
-func PostController() *crud.CrudCtrl[*schema.Page] {
+func PageController() *crud.CrudCtrl[*schema.Page] {
 	return crud.NewCrudController[*schema.Page](
 		pageservice.Name,
 		schema.UserIdColumnName,

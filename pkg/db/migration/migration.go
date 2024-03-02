@@ -11,5 +11,6 @@ func MigrateSchemas(db *gorm.DB) {
 		&schema.Blog{},
 		&schema.Category{},
 		&schema.Post{},
+		&schema.Page{},
 	)
 }
